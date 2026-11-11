@@ -1,0 +1,61 @@
+text,disruption_type,affected_region,severity,duration_days,label
+"Port of Los Angeles workers threaten imminent strike over automated cranes.",port_strike,us-west-coast,CRITICAL,14,CRITICAL
+"Suez canal blocked by grounded container ship, delaying 100+ vessels.",logistics,middle-east,CRITICAL,7,CRITICAL
+"Category 5 hurricane approaching Florida coast, forcing evacuations.",weather,us-east-coast,CRITICAL,10,CRITICAL
+"Major cyber attack hits Maersk operations globally, paralyzing booking.",cyber,global,CRITICAL,5,CRITICAL
+"Escalating conflict in the Red Sea leads to rerouting of all lines.",war,middle-east,CRITICAL,30,CRITICAL
+"Semiconductor factory in Taiwan offline after 7.2 magnitude earthquake.",supplier,east-asia,CRITICAL,15,CRITICAL
+"Ransomware attack disables European rail freight network.",cyber,europe,CRITICAL,3,CRITICAL
+"Typhoon expected to hit Shenzhen ports within 24 hours.",weather,east-asia,HIGH,4,HIGH
+"Truck driver shortage in the UK causing widespread delivery delays.",logistics,europe,HIGH,20,HIGH
+"Labor union at Port of Rotterdam announces a 3-day walkout next week.",port_strike,europe,HIGH,3,HIGH
+"Severe flooding in Germany disrupting inland waterway transport.",weather,europe,HIGH,8,HIGH
+"Geopolitical tensions result in sudden new tariffs on tech imports.",customs,global,HIGH,90,HIGH
+"Cyberattack targets major US logistics provider, causing regional slowdowns.",cyber,us-west-coast,HIGH,4,HIGH
+"Wildfires in California forcing closure of key freight highways.",weather,us-west-coast,HIGH,7,HIGH
+"Rail workers in Canada on strike for the next 48 hours.",logistics,north-america,HIGH,2,HIGH
+"Regional port congestion in Shanghai increasing wait times by 5 days.",logistics,east-asia,MEDIUM,15,MEDIUM
+"Heavy snowfall in Chicago delaying cargo flights by 12 hours.",weather,north-america,MEDIUM,2,MEDIUM
+"Minor IT glitch briefly halts customs processing at JFK airport.",cyber,north-america,MEDIUM,1,MEDIUM
+"Truckers protest fuel prices in France, slowing traffic.",logistics,europe,MEDIUM,5,MEDIUM
+"Localized power outage affects warehousing operations in Texas.",logistics,north-america,MEDIUM,1,MEDIUM
+"Low water levels in the Panama Canal restricting daily transit volume.",weather,latin-america,MEDIUM,60,MEDIUM
+"Border checks intensified, leading to minor delays at crossings.",customs,europe,MEDIUM,7,MEDIUM
+"Scheduled maintenance at major terminal reduces capacity by 20%.",port_strike,us-west-coast,MEDIUM,14,MEDIUM
+"Seasonal spike in demand straining local delivery networks.",logistics,global,MEDIUM,30,MEDIUM
+"Supplier factory in Vietnam pauses production for 2 days due to materials.",supplier,southeast-asia,MEDIUM,2,MEDIUM
+"Customs system upgrade in Brazil causing slow clearances.",customs,latin-america,MEDIUM,4,MEDIUM
+"Normal operations reported across all major US east coast ports.",normal,us-east-coast,LOW,0,LOW
+"Vessels moving smoothly through the English Channel.",normal,europe,LOW,0,LOW
+"Clear weather and standard operations at Port of Singapore.",normal,southeast-asia,LOW,0,LOW
+"No major geopolitical events affecting supply chains today.",normal,global,LOW,0,LOW
+"Logistics providers operating at normal capacity globally.",normal,global,LOW,0,LOW
+"Routine software update deployed successfully across shipping network.",normal,global,LOW,0,LOW
+"Labor contract negotiations proceeding amicably.",normal,us-west-coast,LOW,0,LOW
+"Standard transit times maintained on trans-pacific routes.",normal,global,LOW,0,LOW
+"Minor delay in processing quickly resolved without impact.",normal,global,LOW,0,LOW
+"Supply chain operating stably with adequate capacity.",normal,global,LOW,0,LOW
+"Tension rises in South China sea, maritime warnings issued.",war,east-asia,HIGH,30,HIGH
+"Piracy incident reported near the Horn of Africa, vessel safe.",war,middle-east,MEDIUM,2,MEDIUM
+"Dockworkers in Melbourne agree to temporary terms, pausing strike.",port_strike,oceania,MEDIUM,0,LOW
+"Category 3 cyclone hitting Bangladesh coastal regions.",weather,south-asia,HIGH,7,HIGH
+"Data breach at logistics vendor under investigation, no operation halt yet.",cyber,global,MEDIUM,5,MEDIUM
+"Railway bridge repair in India causing detours for freight trains.",logistics,south-asia,MEDIUM,14,MEDIUM
+"Ice storm in Canada delaying cross-border trucking.",weather,north-america,MEDIUM,3,MEDIUM
+"Major port strike averted at the last minute with new agreement.",normal,europe,LOW,0,LOW
+"Geopolitical summit concludes with new trade agreements.",normal,global,LOW,0,LOW
+"Weather systems clear, allowing resumption of halted air freight.",normal,global,LOW,0,LOW
+"System restored after brief cyber incident, no data lost.",normal,global,LOW,0,LOW
+"Global supply chain resilience index reaches all-time high.",normal,global,LOW,0,LOW
+"New automated terminal opens in Tuas, Singapore.",normal,southeast-asia,LOW,0,LOW
+"Smooth customs processing reported at EU borders.",normal,europe,LOW,0,LOW
+"Supplier in Mexico ramping up production to meet holiday demand.",normal,latin-america,LOW,0,LOW
+"Air traffic control strike in Italy cancels cargo flights.",port_strike,europe,HIGH,2,HIGH
+"Tornado damages key distribution hub in Midwest USA.",weather,north-america,HIGH,30,HIGH
+"New export regulations on critical minerals announced by China.",customs,east-asia,CRITICAL,180,CRITICAL
+"Houthi rebel attacks continue in Red Sea, premiums rise.",war,middle-east,HIGH,60,HIGH
+"DDoS attack takes down regional port authority website.",cyber,europe,MEDIUM,1,MEDIUM
+"Key auto parts supplier files for bankruptcy, halting assembly lines.",supplier,europe,CRITICAL,90,CRITICAL
+"Stricter emission standards cause border delays for older trucks.",customs,north-america,MEDIUM,14,MEDIUM
+"Flash floods in Southeast Asia submerge multiple tier-2 supplier factories.",weather,southeast-asia,CRITICAL,21,CRITICAL
+"Peace treaty signed, reopening crucial land trade routes.",normal,middle-east,LOW,0,LOW
