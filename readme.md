@@ -36,7 +36,8 @@ C:\SupplyChain\
 ├── db/
 │   ├── models.py                 <- SQLAlchemy Models (Shipments, Suppliers, Routes)
 ├── data/
-│   └── supplychain.db            <- SQLite Production Database
+│   ├── sample_company_shipments.csv <- Bundled demo shipment ledger
+│   └── supplychain.db            <- Generated locally at startup; not committed
 ├── ml/
 │   ├── live_threat_engine.py     <- Core Correlation Engine (Threats + Shipments)
 │   ├── company_predict.py        <- ML Inference (Gradient Boosting)
@@ -55,6 +56,8 @@ C:\SupplyChain\
 │   └── config.py                 <- Master Configuration & Environment
 └── logs/                         <- Automated Alert & Audit Trails
 ```
+
+The SQLite database and generated logs are runtime files and are excluded from the repository.
 
 ---
 
@@ -78,6 +81,12 @@ Start both the backend intelligence engine and the frontend command center:
 python run.py all
 ```
 Access the dashboard at `http://localhost:8501`.
+
+### Deploy on Render
+
+This repository includes a `render.yaml` Blueprint for a demo deployment. In Render, create a new **Blueprint Instance**, connect the `SupplyChainDisruptionSystem` repository, select `main`, and review the service plan before applying it. The build trains both prediction models from the bundled datasets so threat scans work on a fresh deployment. The service runs both the local API and Streamlit dashboard; Render routes public traffic only to the dashboard.
+
+The demo uses the bundled shipment dataset and a local SQLite database. Render's free service has an ephemeral filesystem and sleeps after inactivity, so saved actions and database changes can be lost on restarts or sleep. Use a persistent database and access controls before entering real company shipment data. Optional live intelligence and email notifications require their own API credentials, which should be added as Render environment secrets rather than committed to Git.
 
 ### 4. Use the built-in company dataset
 The API loads the bundled sample shipment ledger automatically on a fresh workspace. Open **Control Center** to review shipments and open cases, **Shipments** for risk-linked tracking details, **Network Map** for affected suppliers and routes, and **Actions & History** for resolved responses and the activity record. Use the shared refresh control after another user or process changes the workspace.

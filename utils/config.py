@@ -8,7 +8,8 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 class Config:
     # API Settings
     API_PORT = int(os.getenv("API_PORT", 8000))
-    UI_PORT = int(os.getenv("UI_PORT", 8501))
+    UI_PORT = int(os.getenv("PORT", os.getenv("UI_PORT", 8501)))
+    UI_HOST = os.getenv("UI_HOST", "127.0.0.1")
     API_HOST = os.getenv("API_HOST", "0.0.0.0")
 
     # Paths

@@ -4,6 +4,7 @@ import sys
 import os
 import requests
 import time
+import signal
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 os.chdir(PROJECT_ROOT)
@@ -24,12 +25,19 @@ def train():
 def api():
     print("--- V2 API Layer ---")
     print(f"Starting uvicorn on {Config.API_HOST}:{Config.API_PORT}...")
-    subprocess.run([sys.executable, "-m", "uvicorn", "api.main:app", "--host", Config.API_HOST, "--port", str(Config.API_PORT), "--reload"])
+    command = [sys.executable, "-m", "uvicorn", "api.main:app", "--host", Config.API_HOST, "--port", str(Config.API_PORT)]
+    if os.getenv("API_RELOAD", "true").lower() == "true":
+        command.append("--reload")
+    subprocess.run(command)
 
 def ui():
     print("--- V2 Dashboard Layer ---")
     print(f"Starting Streamlit on port {Config.UI_PORT}...")
-    subprocess.run([sys.executable, "-m", "streamlit", "run", os.path.join("ui", "app.py"), "--server.port", str(Config.UI_PORT)])
+    subprocess.run([
+        sys.executable, "-m", "streamlit", "run", os.path.join("ui", "app.py"),
+        "--server.address", Config.UI_HOST, "--server.port", str(Config.UI_PORT),
+        "--server.headless", "true",
+    ])
 
 def check():
     print("--- V2 System Health Check ---")
@@ -59,22 +67,55 @@ def check():
         print("  [X] API is Offline. Start it with 'python run.py api'")
 
 def all_services():
-    print("--- Antigravity V2 Initialization: Launching All Services ---")
-    
-    api_process = subprocess.Popen([sys.executable, "-m", "uvicorn", "api.main:app", "--host", Config.API_HOST, "--port", str(Config.API_PORT), "--reload"])
-    
-    time.sleep(2)
-    
-    ui_process = subprocess.Popen([sys.executable, "-m", "streamlit", "run", os.path.join("ui", "app.py"), "--server.port", str(Config.UI_PORT)])
-    
+    print("--- Supply Chain Control Center: launching API and dashboard ---")
+    signal.signal(signal.SIGTERM, _handle_termination)
+    api_command = [sys.executable, "-m", "uvicorn", "api.main:app", "--host", Config.API_HOST, "--port", str(Config.API_PORT)]
+    if os.getenv("API_RELOAD", "true").lower() == "true":
+        api_command.append("--reload")
+    api_process = subprocess.Popen(api_command)
+    ui_process = None
     try:
-        api_process.wait()
-        ui_process.wait()
+        for _ in range(60):
+            if api_process.poll() is not None:
+                raise RuntimeError("The API stopped before it became ready.")
+            try:
+                response = requests.get(f"http://127.0.0.1:{Config.API_PORT}/monitor/health", timeout=1)
+                if response.ok:
+                    break
+            except requests.RequestException:
+                pass
+            time.sleep(1)
+        else:
+            raise RuntimeError("The API did not become ready within 60 seconds.")
+
+        ui_command = [
+            sys.executable, "-m", "streamlit", "run", os.path.join("ui", "app.py"),
+            "--server.address", Config.UI_HOST, "--server.port", str(Config.UI_PORT),
+            "--server.headless", "true",
+        ]
+        ui_process = subprocess.Popen(ui_command)
+        while True:
+            if api_process.poll() is not None:
+                raise RuntimeError("The API process stopped.")
+            if ui_process.poll() is not None:
+                raise RuntimeError("The dashboard process stopped.")
+            time.sleep(1)
     except KeyboardInterrupt:
         print("\nShutting down services gracefully...")
-        api_process.terminate()
-        ui_process.terminate()
-        sys.exit(0)
+    finally:
+        for process in (ui_process, api_process):
+            if process is not None and process.poll() is None:
+                process.terminate()
+        for process in (ui_process, api_process):
+            if process is not None:
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+
+
+def _handle_termination(signum, frame):
+    raise KeyboardInterrupt
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Antigravity V2 Launcher")
