@@ -1,0 +1,13 @@
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.env
+*.db
+*.sqlite
+*.sqlite3
+logs/
+ml/artefacts/
+ml/predictions.log
+.pytest_cache/
+.streamlit/secrets.toml
