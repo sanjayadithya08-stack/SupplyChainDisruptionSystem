@@ -73,7 +73,10 @@ class Config:
     # Carrier reroute webhook. Reroutes are never marked executed until this
     # endpoint explicitly confirms them.
     CARRIER_WEBHOOK_URL = _real(os.getenv("CARRIER_WEBHOOK_URL", ""))
-    if VERCEL_RUNTIME and any(host in CARRIER_WEBHOOK_URL.lower() for host in ("localhost", "127.0.0.1")):
+    if VERCEL_RUNTIME and (
+        "localhost" in CARRIER_WEBHOOK_URL.lower()
+        or "127.0.0.1" in CARRIER_WEBHOOK_URL.lower()
+    ):
         CARRIER_WEBHOOK_URL = ""
     CARRIER_API_TOKEN = _real(os.getenv("CARRIER_API_TOKEN", ""))
     CARRIER_WEBHOOK_TIMEOUT = int(os.getenv("CARRIER_WEBHOOK_TIMEOUT", 8))
