@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechCore Orbit</title>
+  <meta name="description" content="3D supply chain command center: live shipments, threat radar and disruption analytics." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='none' stroke='%2338e1ff' stroke-width='3'/><circle cx='16' cy='16' r='4' fill='%2338e1ff'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+      "d3-geo": "https://cdn.jsdelivr.net/npm/d3-geo@3.1.0/+esm",
+      "topojson-client": "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="globe" aria-label="Interactive 3D globe of the supply network"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/><ellipse cx="16" cy="16" rx="12" ry="4.5" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/><circle cx="16" cy="16" r="3.5" fill="currentColor"/></svg>
+      <div>
+        <strong>TechCore Orbit</strong>
+        <span>Supply chain command center</span>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-view="command" aria-selected="true">Command</button>
+      <button role="tab" data-view="shipments">Shipments</button>
+      <button role="tab" data-view="threats">Threat Radar</button>
+      <button role="tab" data-view="analytics">Analytics</button>
+      <button role="tab" data-view="intel">Intelligence</button>
+      <button role="tab" data-view="system">System</button>
+    </nav>
+    <div class="status" id="status"><span class="dot"></span><span class="label">Connecting…</span></div>
+  </header>
+
+  <div class="offline hidden" id="offline">
+    The API is not reachable. Start it with <code>python run.py api</code> and reload this page.
+  </div>
+
+  <main>
+    <!-- COMMAND -->
+    <section class="view active" data-view="command">
+      <div class="col left">
+        <div class="kpis" id="kpis"></div>
+        <div class="card tilt">
+          <h3>Layers</h3>
+          <div class="toggles" id="layerToggles">
+            <label><input type="checkbox" data-layer="routes" checked /> Trade routes</label>
+            <label><input type="checkbox" data-layer="shipments" checked /> Shipments</label>
+            <label><input type="checkbox" data-layer="events" checked /> Geo events</label>
+            <label><input type="checkbox" data-layer="rotate" checked /> Auto-rotate</label>
+          </div>
+          <h3>Route risk</h3>
+          <div class="legend">
+            <span><i style="--c:var(--low)"></i>Low</span>
+            <span><i style="--c:var(--medium)"></i>Medium</span>
+            <span><i style="--c:var(--high)"></i>High</span>
+            <span><i style="--c:var(--critical)"></i>Critical</span>
+          </div>
+        </div>
+      </div>
+      <div class="col right">
+        <div class="card tilt" id="detail">
+          <h3>Selection</h3>
+          <p class="muted">Click a shipment, hub or event on the globe to inspect it.</p>
+        </div>
+        <div class="card tilt">
+          <h3>Hotspots <span class="muted small">geo events, HIGH+</span></h3>
+          <ul class="list" id="hotspots"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHIPMENTS -->
+    <section class="view" data-view="shipments">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Live shipments</h2>
+          <div class="controls">
+            <input type="search" id="shipSearch" placeholder="Search ID, SKU, supplier, port…" aria-label="Search shipments" />
+            <select id="shipStatus" aria-label="Filter by status">
+              <option value="">All statuses</option>
+              <option>In Transit</option><option>Delayed</option><option>Pending</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="shipTable">
+            <thead><tr>
+              <th data-sort="id">ID</th><th data-sort="supplier_name">Supplier</th><th data-sort="origin">Lane</th>
+              <th data-sort="estimated_arrival">ETA</th><th data-sort="value_usd" class="num">Value</th><th data-sort="status">Status</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="muted small">Select a row to fly the globe to that shipment.</p>
+      </div>
+    </section>
+
+    <!-- THREATS -->
+    <section class="view" data-view="threats">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Threat radar</h2>
+          <div class="controls">
+            <button class="btn primary" id="scanBtn">Scan shipments</button>
+            <button class="btn" id="notifyBtn" disabled title="Run a scan first">Dispatch alerts</button>
+          </div>
+        </div>
+        <p class="muted">Correlates news, weather and geopolitical signals with every active lane, then scores each shipment with the company disruption model.</p>
+        <div class="radar-summary" id="radarSummary"></div>
+        <div id="threatList" class="threat-list"></div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section class="view" data-view="analytics">
+      <div class="panel">
+        <div class="panel-head"><h2>Disruption analytics</h2><span class="muted small">Historical company events</span></div>
+        <div class="kpis compact" id="aKpis"></div>
+        <div class="card flat">
+          <h3>Revenue at risk by region <span class="muted small">drag to orbit</span></h3>
+          <div id="bars3d" class="bars3d"></div>
+        </div>
+        <div class="grid2">
+          <div class="card flat"><h3>By disruption type</h3><div id="typeBars" class="hbars"></div></div>
+          <div class="card flat"><h3>Model accuracy</h3><div id="accuracy"></div></div>
+        </div>
+        <div class="card flat"><h3>Revenue at risk over time</h3><div id="trend" class="trend"></div></div>
+        <div class="card flat"><h3>Worst events</h3><ul class="list" id="worst"></ul></div>
+      </div>
+    </section>
+
+    <!-- INTEL -->
+    <section class="view" data-view="intel">
+      <div class="panel">
+        <div class="panel-head"><h2>Intelligence</h2></div>
+        <div class="card flat">
+          <h3>AI disruption analyzer</h3>
+          <form id="analyzeForm" class="analyze">
+            <textarea id="analyzeText" rows="3" placeholder="Paste a headline or situation report, e.g. “Typhoon forces closure of Kaohsiung port for 5 days”" required></textarea>
+            <button class="btn primary" type="submit">Analyze</button>
+          </form>
+          <div id="analyzeOut"></div>
+        </div>
+        <div class="card flat">
+          <h3>Live feed</h3>
+          <div id="news" class="news"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM -->
+    <section class="view" data-view="system">
+      <div class="panel">
+        <div class="panel-head"><h2>System</h2><button class="btn" id="refreshSys">Refresh</button></div>
+        <div class="gauges" id="gauges"></div>
+        <div class="card flat"><h3>Artefacts &amp; channels</h3><div id="artefacts" class="chips"></div></div>
+        <div class="grid2">
+          <div class="card flat"><h3>Recent alerts</h3><ul class="list" id="alerts"></ul></div>
+          <div class="card flat">
+            <h3>Broadcast alert</h3>
+            <form id="alertForm" class="stack">
+              <select id="alertLevel" aria-label="Alert level"><option>INFO</option><option>WARNING</option><option>CRITICAL</option><option>EMERGENCY</option></select>
+              <textarea id="alertMsg" rows="3" placeholder="Describe the situation…" required></textarea>
+              <button class="btn primary" type="submit">Broadcast</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="tooltip" class="tooltip hidden" role="status"></div>
+  <div id="toast" class="toast hidden" role="status"></div>
+  <div id="loader" class="loader"><div class="ring"></div><span>Building the globe…</span></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

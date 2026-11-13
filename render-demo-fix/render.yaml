@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: supply-chain-control-center
+    runtime: python
+    plan: free
+    region: singapore
+    branch: main
+    buildCommand: pip install -r requirements.txt && python ml/train_model.py && python ml/company_train.py
+    startCommand: python run.py all
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: API_HOST
+        value: 127.0.0.1
+      - key: API_PORT
+        value: "8000"
+      - key: API_RELOAD
+        value: "false"
+      - key: UI_HOST
+        value: 0.0.0.0
+      - key: AUTO_SCAN_ENABLED
+        value: "true"
+      - key: AUTO_MITIGATION_ENABLED
+        value: "false"
