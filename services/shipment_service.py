@@ -55,23 +55,43 @@ def get_all_shipments() -> list[Shipment]:
 
 def _mark_eligible_shipments_delivered(today: date | None = None) -> None:
     """Close shipments past ETA unless their stored status says they are disrupted."""
-    from db.models import get_session, ShipmentModel
+    from db.models import engine, get_session, ShipmentModel
+    from sqlalchemy.exc import OperationalError
 
     deadline = (today or date.today()).isoformat()
-    with get_session() as s:
-        rows = s.query(ShipmentModel).filter(
-            ShipmentModel.estimated_arrival < deadline,
-            ShipmentModel.status != "Delivered",
-        ).all()
-        changed = False
-        for row in rows:
-            status = (row.status or "").strip().lower()
-            if "delay" in status or "disrupt" in status:
-                continue
-            row.status = "Delivered"
-            changed = True
-        if changed:
-            s.commit()
+    for attempt in range(2):
+        try:
+            with get_session() as s:
+                rows = s.query(ShipmentModel).filter(
+                    ShipmentModel.estimated_arrival < deadline,
+                    ShipmentModel.status != "Delivered",
+                ).all()
+                changed = False
+                for row in rows:
+                    status = (row.status or "").strip().lower()
+                    if "delay" in status or "disrupt" in status:
+                        continue
+                    row.status = "Delivered"
+                    changed = True
+                if changed:
+                    s.commit()
+            return
+        except OperationalError as exc:
+            message = str(getattr(exc, "orig", exc)).lower()
+            connection_dropped = getattr(exc, "connection_invalidated", False) or any(
+                marker in message for marker in (
+                    "ssl connection has been closed",
+                    "server closed the connection unexpectedly",
+                    "consuming input failed",
+                    "connection reset by peer",
+                    "connection is closed",
+                )
+            )
+            if attempt or not connection_dropped:
+                raise
+            # The query and status update are idempotent; retry once on a fresh
+            # connection if Neon or the network ended the SSL session mid-read.
+            engine.dispose()
 
 
 def _progress(eta: str, transit_days: int, status: str) -> float:
