@@ -13,6 +13,15 @@ try:
 except Exception as e:
     print(f"Warning: Failed to load pipeline - {e}")
 
+def reload_pipeline():
+    """Reload the trained pipeline after first-run bootstrap creates it."""
+    global PIPELINE
+    if not os.path.exists(Config.PIPELINE_PATH):
+        PIPELINE = None
+        return None
+    PIPELINE = joblib.load(Config.PIPELINE_PATH)
+    return PIPELINE
+
 def predict_risk(text: str) -> dict:
     """Returns {label, confidence, disruption_type, affected_regions, estimated_duration_days}"""
     try:
