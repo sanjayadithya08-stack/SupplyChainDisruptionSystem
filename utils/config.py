@@ -14,6 +14,9 @@ def _real(value: str) -> str:
     return v
 
 class Config:
+    # Vercel exposes these system variables during builds and runtime.
+    VERCEL_RUNTIME = os.getenv("VERCEL", "").strip() == "1" or bool(os.getenv("VERCEL_ENV") or os.getenv("VERCEL_URL"))
+
     # API Settings
     API_PORT = int(os.getenv("API_PORT", 8000))
     UI_PORT = int(os.getenv("UI_PORT", 8501))
