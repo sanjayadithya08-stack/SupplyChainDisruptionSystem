@@ -150,9 +150,10 @@ def _rule_based_plan(prediction: dict) -> dict:
     plan.update(playbook)
     return plan
 
-def generate_prevention_plan(prediction: dict) -> dict:
-    """Main entry: Try Gemini first, fall back to rule engine."""
-    llm_plan = _llm_prevention_plan(prediction)
-    if llm_plan:
-        return llm_plan
+def generate_prevention_plan(prediction: dict, allow_llm: bool = True) -> dict:
+    """Generate a plan, optionally using Gemini before the rule-based fallback."""
+    if allow_llm:
+        llm_plan = _llm_prevention_plan(prediction)
+        if llm_plan:
+            return llm_plan
     return _rule_based_plan(prediction)
