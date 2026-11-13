@@ -8,7 +8,21 @@ from sqlalchemy import create_engine, Column, String, Float, Integer, Text
 from sqlalchemy.orm import DeclarativeBase, Session
 from utils.config import Config
 
-engine = create_engine(Config.DB_URL, echo=False)
+_engine_options = {"echo": False}
+if Config.DB_URL.startswith("postgresql"):
+    # Vercel instances can sit idle while Neon closes their SSL connection.
+    # Ping connections before reuse and recycle them regularly; keep the per-
+    # instance pool small so horizontally scaled functions do not exhaust DB slots.
+    _engine_options.update(
+        pool_pre_ping=True,
+        pool_recycle=240,
+        pool_size=1 if Config.VERCEL_RUNTIME else 5,
+        max_overflow=2 if Config.VERCEL_RUNTIME else 10,
+        pool_timeout=20,
+        connect_args={"connect_timeout": 10},
+    )
+
+engine = create_engine(Config.DB_URL, **_engine_options)
 
 class Base(DeclarativeBase):
     pass
