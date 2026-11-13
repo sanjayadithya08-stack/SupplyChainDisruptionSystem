@@ -5,7 +5,7 @@ Falls back to log-only mode if credentials are absent.
 """
 from dataclasses import dataclass
 from datetime import datetime
-import json, os, sys, smtplib, html
+import json, os, sys, smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -44,19 +44,20 @@ def _send_slack(level: str, message: str) -> bool:
         print(f"[Slack] Failed: {e}")
     return False
 
-def _send_email(level: str, message: str, recipients: list, subject: str | None = None) -> bool:
+def _send_email(level: str, message: str, recipients: list, demo: bool = False) -> bool:
     if not Config.SMTP_USER or not Config.SMTP_PASSWORD:
         return False
     try:
         msg = MIMEMultipart("alternative")
-        msg["Subject"] = (subject or f"[{level}] Supply Chain Alert — Antigravity V2").replace("\r", " ").replace("\n", " ")
+        prefix = "[DEMO] " if demo else ""
+        msg["Subject"] = f"{prefix}[{level}] Supply Chain Alert — Antigravity V2"
         msg["From"] = Config.SMTP_USER
         msg["To"] = ", ".join(recipients)
         html = f"""
         <html><body>
         <div style="font-family:Inter,sans-serif;max-width:600px;margin:auto;padding:20px;border:2px solid #dc3545;border-radius:10px">
-            <h2 style="color:#dc3545">{level} Alert</h2>
-            <pre style="background:#f8f9fa;padding:15px;border-radius:6px;white-space:pre-wrap">{html.escape(message)}</pre>
+            <h2 style="color:#dc3545">{"DEMO — " if demo else ""}{level} Alert</h2>
+            <pre style="background:#f8f9fa;padding:15px;border-radius:6px;white-space:pre-wrap">{message}</pre>
             <p style="color:#6c757d;font-size:12px">Sent by Antigravity Supply Chain V2 · {datetime.utcnow().isoformat()} UTC</p>
         </div></body></html>"""
         msg.attach(MIMEText(html, "html"))
@@ -70,34 +71,12 @@ def _send_email(level: str, message: str, recipients: list, subject: str | None 
         print(f"[Email] Failed: {e}")
     return False
 
-def send_recipient_email(level: str, subject: str, message: str, recipient: str, *, role: str) -> dict:
-    """Email one named supplier/customer contact and report delivery truthfully."""
-    ready = bool(Config.SMTP_USER and Config.SMTP_PASSWORD)
-    delivered = _send_email(level, message, [recipient], subject=subject) if ready else False
-    status = "sent" if delivered else "failed" if ready else "not_configured"
-    channel = "email" if delivered else "log"
-    alert = Alert(
-        id=f"ALT-{int(datetime.utcnow().timestamp() * 1000)}", level=level,
-        message=message, recipients=[recipient], timestamp=datetime.utcnow().isoformat(),
-        acknowledged=False, channel=channel,
-    )
-    _log_alert(alert)
-    try:
-        from services.action_service import record_action
-        record_action(
-            "recipient_alert_sent" if delivered else "recipient_alert_logged",
-            f"Critical disruption email to {role} {status.replace('_', ' ')}.",
-            actor="system", status="completed" if delivered else "pending" if status == "not_configured" else "failed",
-            metadata={"role": role, "delivery_status": status, "recipient": recipient, "channel": channel},
-        )
-    except Exception as exc:
-        print(f"[ActionAudit] Recipient email result could not be recorded: {exc}")
-    detail = ("Email sent successfully." if status == "sent" else
-              "SMTP credentials are not configured." if status == "not_configured" else
-              "SMTP delivery failed; the notice was logged locally.")
-    return {"status": status, "channel": channel, "recipient": recipient, "detail": detail}
-
 def _log_alert(alert: Alert):
+    if Config.DATABASE_URL:
+        from dataclasses import asdict
+        from services.event_store import write_event
+        write_event("alert", alert.id, asdict(alert))
+        return
     os.makedirs(Config.LOGS_DIR, exist_ok=True)
     try:
         with open(Config.ALERTS_LOG_PATH, "a") as f:
@@ -106,10 +85,15 @@ def _log_alert(alert: Alert):
         print(f"[AlertLog] Write failed: {e}")
 
 def send_alert(level: str, message: str, recipients: list) -> bool:
+    return send_alert_with_status(level, message, recipients)["delivered"]
+
+
+def send_alert_with_status(level: str, message: str, recipients: list, demo: bool = False) -> dict:
     channels = []
-    if _send_slack(level, message): channels.append("slack")
-    if _send_email(level, message, recipients): channels.append("email")
-    if not channels: channels.append("log")
+    if not demo and _send_slack(level, message): channels.append("slack")
+    if _send_email(level, message, recipients, demo=demo): channels.append("email")
+    delivered = bool(channels)
+    if not delivered: channels.append("log")
 
     alert = Alert(
         id=f"ALT-{int(datetime.utcnow().timestamp())}",
@@ -119,27 +103,32 @@ def send_alert(level: str, message: str, recipients: list) -> bool:
         channel=",".join(channels)
     )
     _log_alert(alert)
-    try:
-        from services.action_service import record_action
-        record_action("alert_sent" if any(channel in {"slack", "email"} for channel in channels) else "alert_logged",
-                      f"{level} alert {'delivered' if any(channel in {'slack', 'email'} for channel in channels) else 'saved locally'} via {alert.channel}.", actor="system",
-                      metadata={"recipients": recipients, "level": level, "channel": alert.channel})
-    except Exception as e:
-        print(f"[ActionAudit] Alert was logged but activity record failed: {e}")
-    return any(channel in {"slack", "email"} for channel in channels)
+    return {"recorded": True, "delivered": delivered, "channel": alert.channel, "alert_id": alert.id}
 
 def send_prevention_plan(plan: dict, recipients: list) -> bool:
+    return send_prevention_plan_with_status(plan, recipients)["delivered"]
+
+
+def send_prevention_plan_with_status(plan: dict, recipients: list, demo: bool = False) -> dict:
     priority = plan.get("priority", "P3")
     level = "EMERGENCY" if priority == "P1" else "WARNING" if priority == "P2" else "INFO"
     summary = plan.get("llm_summary", "")
     actions = "\n".join([f"  • {a}" for a in plan.get("immediate_actions", [])])
-    message = f"Supply Chain Action Required\nPriority: {priority} | Cost: {plan.get('estimated_cost_impact','?')}\n\n"
+    shipment = plan.get("target_shipment")
+    cause = plan.get("disruption_type")
+    message = "Supply Chain Action Required\n"
+    if shipment: message += f"Shipment: {shipment}\n"
+    if cause: message += f"Cause: {cause}\n"
+    message += f"Priority: {priority} | Cost: {plan.get('estimated_cost_impact','?')}\n\n"
     if summary: message += f"AI Summary:\n{summary}\n\n"
     message += f"Immediate Actions:\n{actions}"
-    return send_alert(level, message, recipients)
+    return send_alert_with_status(level, message, recipients, demo=demo)
 
 def get_recent_alerts(n: int = 10) -> list[Alert]:
     try:
+        if Config.DATABASE_URL:
+            from services.event_store import list_events
+            return [Alert(**event) for event in list_events("alert", n)]
         if not os.path.exists(Config.ALERTS_LOG_PATH): return []
         alerts = []
         with open(Config.ALERTS_LOG_PATH, "r") as f:

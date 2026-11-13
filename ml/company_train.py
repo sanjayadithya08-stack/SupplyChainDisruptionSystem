@@ -26,19 +26,17 @@ COMPANY_REPORT_PATH  = os.path.join(Config.ARTEFACTS_DIR, "company_training_repo
 COMPANY_DATASET      = os.path.join(Config.DATA_DIR, "company_dataset.csv")
 
 CAT_FEATURES = ["supplier_country", "product_line", "disruption_type", "region", "route_id"]
-NUM_FEATURES = ["affected_units", "delay_days", "revenue_at_risk_usd", "supplier_reliability_score"]
+NUM_FEATURES = ["affected_units", "supplier_reliability_score"]
 
 def _engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    # Financial exposure per unit
-    df["cost_per_unit"] = (df["revenue_at_risk_usd"] / (df["affected_units"] + 1)).round(2)
-    # Risk score (low reliability = high risk)
-    df["supplier_risk_index"] = (1 - df["supplier_reliability_score"]) * (df["delay_days"] + 1)
-    # Volume severity
+    # Keep inference thresholds identical to company_predict._engineer.
     df["volume_severity"] = pd.cut(
         df["affected_units"],
-        bins=[0, 2000, 7000, 15000, 999999],
-        labels=["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+        bins=[0, 2000, 7000, 15000, float("inf")],
+        labels=["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+        right=False,
+        include_lowest=True,
     ).astype(str)
     # Month (seasonality)
     df["month"] = pd.to_datetime(df["date"]).dt.month
@@ -57,7 +55,7 @@ def train():
     df = _engineer_features(df)
 
     all_cat = CAT_FEATURES + ["volume_severity"]
-    all_num = NUM_FEATURES + ["cost_per_unit", "supplier_risk_index", "month", "is_normal"]
+    all_num = NUM_FEATURES + ["month", "is_normal"]
 
     X = df[all_cat + all_num]
     y = df["label"]

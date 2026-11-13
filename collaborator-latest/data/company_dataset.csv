@@ -1,0 +1,121 @@
+event_id,date,supplier_id,supplier_name,supplier_country,product_line,sku,route_id,disruption_type,root_cause,affected_units,delay_days,revenue_at_risk_usd,supplier_reliability_score,region,severity,label
+E001,2023-01-05,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC01,R1,port_strike,Port workers union strike at Kaohsiung port,12000,8,960000,0.72,east-asia,HIGH,HIGH
+E002,2023-01-12,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT03,R1,customs,Chinese New Year customs backlog at border,5000,4,200000,0.81,east-asia,MEDIUM,MEDIUM
+E003,2023-01-19,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP07,R3,weather,Severe snowstorm closes Frankfurt logistics hub,2000,6,320000,0.88,europe,HIGH,HIGH
+E004,2023-01-28,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC02,R1,normal,Shipment on schedule,15000,0,0,0.72,east-asia,LOW,LOW
+E005,2023-02-03,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT01,R2,supplier,Factory fire at Hanoi assembly plant,8000,14,640000,0.65,southeast-asia,CRITICAL,CRITICAL
+E006,2023-02-10,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC03,R2,logistics,Vessel delay due to Pacific storm,6000,5,480000,0.91,east-asia,MEDIUM,MEDIUM
+E007,2023-02-18,S009,Texas Polymers,USA,Plastics,SKU-PL01,R8,normal,Routine delivery completed,3000,0,0,0.95,north-america,LOW,LOW
+E008,2023-02-25,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT02,R1,cyber,Ransomware attack on Shenzhen supplier ERP,7500,10,600000,0.81,east-asia,CRITICAL,CRITICAL
+E009,2023-03-04,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP02,R3,customs,New EU import tariffs causing border delays,1800,7,288000,0.88,europe,HIGH,HIGH
+E010,2023-03-11,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB01,R8,logistics,Truck driver shortage across Mexico border,2500,3,75000,0.77,latin-america,MEDIUM,MEDIUM
+E011,2023-03-18,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC01,R1,war,Heightened military tensions in Taiwan strait,20000,21,1600000,0.72,east-asia,CRITICAL,CRITICAL
+E012,2023-03-25,S010,Calgary Petrochem,Canada,Chemicals,SKU-CH01,R8,weather,Blizzard closes Trans-Canada highway,1200,4,96000,0.97,north-america,MEDIUM,MEDIUM
+E013,2023-04-01,S006,Andes Weavers,Peru,Fabrics,SKU-FB02,R8,normal,On-time delivery,4000,0,0,0.83,latin-america,LOW,LOW
+E014,2023-04-08,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP04,R3,port_strike,Trieste port workers strike blocks EU shipments,3000,9,480000,0.79,europe,HIGH,HIGH
+E015,2023-04-15,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT04,R1,logistics,Severe congestion at Shanghai port,9000,6,720000,0.81,east-asia,HIGH,HIGH
+E016,2023-04-22,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH01,R12,customs,Documentation errors cause customs hold in Singapore,500,5,50000,0.74,south-asia,MEDIUM,MEDIUM
+E017,2023-04-29,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC04,R2,normal,Standard shipment no issues,8000,0,0,0.91,east-asia,LOW,LOW
+E018,2023-05-06,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC02,R1,weather,Typhoon Khanun disrupts Taiwan operations,18000,15,1440000,0.72,east-asia,CRITICAL,CRITICAL
+E019,2023-05-13,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM01,R10,logistics,Vessel breakdown in Indonesian waters,3500,8,140000,0.68,southeast-asia,HIGH,HIGH
+E020,2023-05-20,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP01,R3,normal,Scheduled delivery,2000,0,0,0.88,europe,LOW,LOW
+E021,2023-05-27,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT03,R7,port_strike,Red Sea rerouting adds 14 days transit,11000,14,880000,0.81,middle-east,CRITICAL,CRITICAL
+E022,2023-06-03,S009,Texas Polymers,USA,Plastics,SKU-PL02,R8,weather,Hurricane season disrupts Gulf of Mexico routes,2000,5,160000,0.95,north-america,HIGH,HIGH
+E023,2023-06-10,S012,Bangkok Materials,Thailand,Raw Materials,SKU-RM02,R10,supplier,Factory shutdown due to labor dispute,6000,11,240000,0.71,southeast-asia,HIGH,HIGH
+E024,2023-06-17,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC01,R1,normal,Normal ops,14000,0,0,0.72,east-asia,LOW,LOW
+E025,2023-06-24,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP05,R3,cyber,Cyberattack on EU logistics provider,2500,7,400000,0.79,europe,HIGH,HIGH
+E026,2023-07-01,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT02,R2,weather,Monsoon flooding affects road transport,7000,9,560000,0.65,southeast-asia,HIGH,HIGH
+E027,2023-07-08,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB01,R8,normal,Routine delivery,3200,0,0,0.77,latin-america,LOW,LOW
+E028,2023-07-15,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC03,R2,supplier,Power outage halts DRAM production 3 days,9000,3,720000,0.91,east-asia,MEDIUM,MEDIUM
+E029,2023-07-22,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT01,R1,customs,US-China tariff escalation delays clearance,10000,8,800000,0.81,east-asia,HIGH,HIGH
+E030,2023-07-29,S010,Calgary Petrochem,Canada,Chemicals,SKU-CH02,R8,normal,On schedule,1500,0,0,0.97,north-america,LOW,LOW
+E031,2023-08-05,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM01,R10,weather,Tropical storm disrupts sea freight,4000,6,160000,0.68,southeast-asia,HIGH,HIGH
+E032,2023-08-12,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP03,R3,logistics,Rhine river low water halts barge transport,2800,8,448000,0.88,europe,HIGH,HIGH
+E033,2023-08-19,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC04,R1,supplier,TSMC fab maintenance window extends 5 days,16000,5,1280000,0.72,east-asia,MEDIUM,MEDIUM
+E034,2023-08-26,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH02,R12,normal,Shipment arrived on time,600,0,0,0.74,south-asia,LOW,LOW
+E035,2023-09-02,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT04,R1,port_strike,Dockworker strike at Yantian terminal,13000,10,1040000,0.81,east-asia,CRITICAL,CRITICAL
+E036,2023-09-09,S006,Andes Weavers,Peru,Fabrics,SKU-FB03,R8,logistics,Andean highway blockade by protests,2000,6,80000,0.83,latin-america,HIGH,HIGH
+E037,2023-09-16,S009,Texas Polymers,USA,Plastics,SKU-PL01,R8,normal,Normal delivery,2500,0,0,0.95,north-america,LOW,LOW
+E038,2023-09-23,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP06,R3,weather,Early winter storm disrupts Central Europe roads,1500,5,240000,0.79,europe,MEDIUM,MEDIUM
+E039,2023-09-30,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT03,R2,supplier,Quality failure halts shipment for inspection,5000,12,400000,0.65,southeast-asia,HIGH,HIGH
+E040,2023-10-07,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC01,R2,normal,On time,11000,0,0,0.91,east-asia,LOW,LOW
+E041,2023-10-14,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC03,R1,war,PLA military drills encircle Taiwan disrupting air freight,22000,18,1760000,0.72,east-asia,CRITICAL,CRITICAL
+E042,2023-10-21,S012,Bangkok Materials,Thailand,Raw Materials,SKU-RM03,R10,customs,Thailand export restrictions on raw rubber,3000,7,120000,0.71,southeast-asia,MEDIUM,MEDIUM
+E043,2023-10-28,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP01,R3,normal,Scheduled delivery OK,2200,0,0,0.88,europe,LOW,LOW
+E044,2023-11-04,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT02,R1,logistics,Pre-Golden-Week rush causes port congestion,8000,5,640000,0.81,east-asia,MEDIUM,MEDIUM
+E045,2023-11-11,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB02,R8,logistics,US border slowdown due to security checks,1800,4,54000,0.77,latin-america,MEDIUM,MEDIUM
+E046,2023-11-18,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH01,R12,weather,Cyclone closes Chennai port for 3 days,700,5,70000,0.74,south-asia,HIGH,HIGH
+E047,2023-11-25,S009,Texas Polymers,USA,Plastics,SKU-PL02,R8,normal,Normal delivery,3000,0,0,0.95,north-america,LOW,LOW
+E048,2023-12-02,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC02,R1,cyber,State-sponsored cyber attack on semiconductor supply network,19000,13,1520000,0.72,east-asia,CRITICAL,CRITICAL
+E049,2023-12-09,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM02,R10,normal,Normal delivery,4500,0,0,0.68,southeast-asia,LOW,LOW
+E050,2023-12-16,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP04,R3,logistics,Christmas period carrier capacity crunch,2500,7,400000,0.88,europe,HIGH,HIGH
+E051,2024-01-06,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT01,R1,customs,Post-holiday customs backlog at Shenzhen,6000,4,480000,0.81,east-asia,MEDIUM,MEDIUM
+E052,2024-01-13,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC04,R2,weather,Yellow dust storm disrupts Korean logistics,5000,3,400000,0.91,east-asia,MEDIUM,MEDIUM
+E053,2024-01-20,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT02,R2,supplier,Vietnamese factory capacity cut due to buyer pullback,4000,0,320000,0.65,southeast-asia,MEDIUM,MEDIUM
+E054,2024-01-27,S010,Calgary Petrochem,Canada,Chemicals,SKU-CH01,R8,normal,On time,1800,0,0,0.97,north-america,LOW,LOW
+E055,2024-02-03,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC01,R1,supplier,Wafer shortage reduces output by 30%,17000,9,1360000,0.72,east-asia,CRITICAL,CRITICAL
+E056,2024-02-10,S012,Bangkok Materials,Thailand,Raw Materials,SKU-RM01,R10,logistics,Laem Chabang port congestion,3500,5,140000,0.71,southeast-asia,MEDIUM,MEDIUM
+E057,2024-02-17,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP02,R3,normal,Delivery OK,1900,0,0,0.88,europe,LOW,LOW
+E058,2024-02-24,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT03,R7,war,Houthi attacks force Suez rerouting,15000,17,1200000,0.81,middle-east,CRITICAL,CRITICAL
+E059,2024-03-02,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB01,R8,normal,On schedule,2800,0,0,0.77,latin-america,LOW,LOW
+E060,2024-03-09,S009,Texas Polymers,USA,Plastics,SKU-PL01,R8,weather,Texas freeze event shuts petrochemical plants,2000,6,160000,0.95,north-america,HIGH,HIGH
+E061,2024-03-16,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP05,R3,supplier,Key component shortage causes production halt,3500,10,560000,0.79,europe,CRITICAL,CRITICAL
+E062,2024-03-23,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH02,R12,customs,FSSAI regulatory change delays clearance,800,6,80000,0.74,south-asia,MEDIUM,MEDIUM
+E063,2024-03-30,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC02,R2,normal,On time,12000,0,0,0.91,east-asia,LOW,LOW
+E064,2024-04-06,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM03,R10,supplier,Union strike at Tanjung Priok port,5000,8,200000,0.68,southeast-asia,HIGH,HIGH
+E065,2024-04-13,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT04,R1,normal,No disruption,10000,0,0,0.81,east-asia,LOW,LOW
+E066,2024-04-20,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC03,R1,weather,Taiwan earthquake damages fab facility,25000,22,2000000,0.72,east-asia,CRITICAL,CRITICAL
+E067,2024-04-27,S006,Andes Weavers,Peru,Fabrics,SKU-FB02,R8,normal,Regular delivery,2100,0,0,0.83,latin-america,LOW,LOW
+E068,2024-05-04,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP06,R3,cyber,NotPetya variant hits German automotive logistics,4000,11,640000,0.88,europe,CRITICAL,CRITICAL
+E069,2024-05-11,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT01,R2,weather,Super typhoon makes landfall near Da Nang,9000,13,720000,0.65,southeast-asia,CRITICAL,CRITICAL
+E070,2024-05-18,S010,Calgary Petrochem,Canada,Chemicals,SKU-CH02,R8,logistics,CN Rail strike disrupts inland freight,1600,6,128000,0.97,north-america,HIGH,HIGH
+E071,2024-05-25,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC01,R2,normal,On schedule,13000,0,0,0.91,east-asia,LOW,LOW
+E072,2024-06-01,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT02,R1,port_strike,Busan port strike diverts trans-pacific cargo,11000,9,880000,0.81,east-asia,HIGH,HIGH
+E073,2024-06-08,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB03,R8,logistics,Zetas cartel roadblock disrupts Laredo crossing,1500,5,45000,0.77,latin-america,HIGH,HIGH
+E074,2024-06-15,S009,Texas Polymers,USA,Plastics,SKU-PL02,R8,normal,On time,2800,0,0,0.95,north-america,LOW,LOW
+E075,2024-06-22,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH01,R12,supplier,API raw material shortage disrupts production,900,8,90000,0.74,south-asia,HIGH,HIGH
+E076,2024-06-29,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC04,R1,normal,Normal ops,14500,0,0,0.72,east-asia,LOW,LOW
+E077,2024-07-06,S012,Bangkok Materials,Thailand,Raw Materials,SKU-RM02,R10,weather,Monsoon floods close roads to Laem Chabang,4000,7,160000,0.71,southeast-asia,HIGH,HIGH
+E078,2024-07-13,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP03,R3,normal,Normal delivery,2100,0,0,0.79,europe,LOW,LOW
+E079,2024-07-20,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT03,R1,customs,US Section 301 tariff increase blocks 3000 units,8000,9,640000,0.81,east-asia,HIGH,HIGH
+E080,2024-07-27,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM01,R10,normal,Routine delivery,5000,0,0,0.68,southeast-asia,LOW,LOW
+E081,2024-08-03,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP01,R3,logistics,Rail freight strike across Germany,3000,7,480000,0.88,europe,HIGH,HIGH
+E082,2024-08-10,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC03,R2,supplier,Fab 3 fire causes partial production halt,8000,12,640000,0.91,east-asia,CRITICAL,CRITICAL
+E083,2024-08-17,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT04,R2,normal,Delivery on schedule,6000,0,0,0.65,southeast-asia,LOW,LOW
+E084,2024-08-24,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB01,R8,customs,USMCA certification dispute delays border crossing,2200,5,66000,0.77,latin-america,MEDIUM,MEDIUM
+E085,2024-09-01,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC02,R1,war,China conducts live-fire drills blocking Taiwan strait,21000,20,1680000,0.72,east-asia,CRITICAL,CRITICAL
+E086,2024-09-08,S010,Calgary Petrochem,Canada,Chemicals,SKU-CH01,R8,normal,On time,2000,0,0,0.97,north-america,LOW,LOW
+E087,2024-09-15,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT02,R1,cyber,Supply chain software compromised via third-party vendor,9000,8,720000,0.81,east-asia,HIGH,HIGH
+E088,2024-09-22,S006,Andes Weavers,Peru,Fabrics,SKU-FB03,R8,logistics,Peruvian port strike at Callao,1800,8,54000,0.83,latin-america,HIGH,HIGH
+E089,2024-09-29,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH02,R12,weather,Northeast monsoon causes flooding in Chennai,700,6,70000,0.74,south-asia,HIGH,HIGH
+E090,2024-10-06,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC01,R2,normal,No disruption,14000,0,0,0.91,east-asia,LOW,LOW
+E091,2024-10-13,S012,Bangkok Materials,Thailand,Raw Materials,SKU-RM03,R10,supplier,Key raw material price spike forces output cut,3000,4,120000,0.71,southeast-asia,MEDIUM,MEDIUM
+E092,2024-10-20,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP05,R3,normal,On time,2400,0,0,0.88,europe,LOW,LOW
+E093,2024-10-27,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT01,R1,port_strike,Shenzhen customs officers work-to-rule,7000,6,560000,0.81,east-asia,HIGH,HIGH
+E094,2024-11-03,S009,Texas Polymers,USA,Plastics,SKU-PL01,R8,logistics,Mississippi river low water halts barge freight,1800,5,144000,0.95,north-america,MEDIUM,MEDIUM
+E095,2024-11-10,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP02,R3,weather,Early winter floods close Czech motorways,2800,8,448000,0.79,europe,HIGH,HIGH
+E096,2024-11-17,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC04,R1,normal,Normal ops,16000,0,0,0.72,east-asia,LOW,LOW
+E097,2024-11-24,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM02,R10,weather,La Nina flooding shuts rubber plantations,5500,10,220000,0.68,southeast-asia,CRITICAL,CRITICAL
+E098,2024-12-01,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB02,R8,normal,On schedule,3000,0,0,0.77,latin-america,LOW,LOW
+E099,2024-12-08,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT03,R2,supplier,Component shortage halts final assembly,7000,11,560000,0.65,southeast-asia,HIGH,HIGH
+E100,2024-12-15,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT04,R1,customs,Holiday season customs queue at Yantian,9500,5,760000,0.81,east-asia,MEDIUM,MEDIUM
+E101,2024-12-22,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC02,R2,normal,On schedule,12000,0,0,0.91,east-asia,LOW,LOW
+E102,2024-12-29,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP06,R3,logistics,Year-end carrier shortage across Europe,2000,6,320000,0.88,europe,HIGH,HIGH
+E103,2025-01-05,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC01,R1,cyber,UEFI firmware attack targets semiconductor supply chain,18000,14,1440000,0.72,east-asia,CRITICAL,CRITICAL
+E104,2025-01-12,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH01,R12,normal,On time,800,0,0,0.74,south-asia,LOW,LOW
+E105,2025-01-19,S012,Bangkok Materials,Thailand,Raw Materials,SKU-RM01,R10,logistics,Laem Chabang crane breakdown,3000,4,120000,0.71,southeast-asia,MEDIUM,MEDIUM
+E106,2025-01-26,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT02,R1,war,Escalation of South China Sea territorial disputes,16000,18,1280000,0.81,east-asia,CRITICAL,CRITICAL
+E107,2025-02-02,S010,Calgary Petrochem,Canada,Chemicals,SKU-CH02,R8,weather,Arctic blast closes Alberta highway network,1400,5,112000,0.97,north-america,HIGH,HIGH
+E108,2025-02-09,S004,Czech Auto Works,Czech Republic,Auto Parts,SKU-AP04,R3,normal,On time,2600,0,0,0.79,europe,LOW,LOW
+E109,2025-02-16,S006,Andes Weavers,Peru,Fabrics,SKU-FB01,R8,supplier,Cotton blight reduces Peru output by 40%,2500,12,75000,0.83,latin-america,HIGH,HIGH
+E110,2025-02-23,S008,Hanoi Tech Assembly,Vietnam,Consumer Tech,SKU-CT01,R2,weather,Category 5 typhoon hits Vietnam coastline,11000,18,880000,0.65,southeast-asia,CRITICAL,CRITICAL
+E111,2025-03-02,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC03,R2,normal,Normal delivery,9000,0,0,0.91,east-asia,LOW,LOW
+E112,2025-03-09,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT03,R1,port_strike,International dock workers solidarity strike,12000,11,960000,0.81,east-asia,CRITICAL,CRITICAL
+E113,2025-03-16,S009,Texas Polymers,USA,Plastics,SKU-PL02,R8,normal,On schedule,3200,0,0,0.95,north-america,LOW,LOW
+E114,2025-03-23,S011,Jakarta Rubber Works,Indonesia,Raw Materials,SKU-RM03,R10,supplier,Labor strike at plantation closes 3 facilities,4500,9,180000,0.68,southeast-asia,HIGH,HIGH
+E115,2025-03-30,S001,Global MicroTech,Taiwan,Semiconductors,SKU-MC04,R1,normal,Normal ops,17000,0,0,0.72,east-asia,LOW,LOW
+E116,2025-04-06,S003,Bavarian Motors Parts,Germany,Auto Parts,SKU-AP03,R3,customs,Post-Brexit trade friction delays Germany-UK shipments,2800,8,448000,0.88,europe,HIGH,HIGH
+E117,2025-04-13,S005,Pan-Am Textiles,Mexico,Fabrics,SKU-FB03,R8,logistics,I-35 bridge closure disrupts Laredo freight,1600,5,48000,0.77,latin-america,MEDIUM,MEDIUM
+E118,2025-04-20,S013,Mumbai Pharma,India,Pharmaceuticals,SKU-PH02,R12,supplier,API manufacturer closes due to pollution violation,600,14,60000,0.74,south-asia,CRITICAL,CRITICAL
+E119,2025-04-27,S002,Seoul Silicates,South Korea,Semiconductors,SKU-MC01,R2,cyber,Supply chain hack targets Korean chipmaker,10000,10,800000,0.91,east-asia,HIGH,HIGH
+E120,2025-05-04,S007,Shenzhen Electronics,China,Consumer Tech,SKU-CT04,R1,normal,No disruption,11500,0,0,0.81,east-asia,LOW,LOW

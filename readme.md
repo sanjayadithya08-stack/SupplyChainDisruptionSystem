@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>🚢 Supply Chain Control Center</h1>
-  <p><i>A shipment tracking and disruption response workspace that can use your company's own CSV data.</i></p>
+  <h1>🚢 TechCore: Enterprise Supply Chain Intelligence</h1>
+  <p><i>A production-grade, autonomous platform for tracking active shipments, predicting disruptions, and executing automated mitigation plans.</i></p>
   
   ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
   ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)
@@ -13,16 +13,33 @@
 
 ## 🌟 Overview
 
-The Supply Chain Control Center starts with a bundled 120-shipment company dataset, 22 suppliers, and a mix of LOW, MEDIUM, HIGH, and CRITICAL baseline risks and shipment statuses. Home, Disruption Center, Shipments, Network Map, Actions & History, and Live Intelligence share the same workspace data. No dataset upload is needed for the current demo.
+**TechCore SupplyChain AI** is a shipment-centric intelligence platform designed to move logistics from reactive to proactive. Unlike generic news trackers, this system centers strictly on your company's operational data—tracking every active shipment, correlating global events (weather, strikes, geopolitical) to specific transit routes, and autonomously notifying stakeholders when revenue is at risk.
+
+---
+
+## 🌐 New: TechCore Orbit — 3D Command Center
+
+The API now serves a WebGL command center at **`http://localhost:8000/`**:
+
+- **Interactive 3D globe** — dotted landmasses, all 15 trade lanes drawn as animated arcs coloured by risk (bending through Suez / the Cape where they actually route), every shipment moving along its lane at its real voyage progress, and pulsing geopolitical hotspots. Hover for details, click to inspect, drag to orbit.
+- **Shipments** — searchable, sortable ledger; click a row to fly the camera to that cargo.
+- **Threat Radar** — one-click scan that recolours the globe by predicted risk and shows each shipment's signals and prevention plan. Alerts are only dispatched when you press *Dispatch alerts*.
+- **Analytics** — an orbitable 3D bar chart of revenue at risk by region, disruption mix, monthly trend and model accuracy.
+- **Intelligence** — AI disruption analyzer for any headline plus the live news feed.
+- **System** — CPU / memory / disk gauges, model artefacts, channel status, alert log and broadcast form.
+
+The original Streamlit console still runs on port 8501.
 
 ---
 
 ## 🚀 Key Features
 
-- **📦 Built-in Shipments**: The sample ledger loads automatically and includes status, supplier, route, ETA, units, and shipment value.
-- **🔍 Disruption Scans**: Check the active shipment list and show cause, risk, recommended actions, and shipment exposure.
-- **🗺️ Connected Network Map**: Show suppliers and routes linked to the current shipment ledger, with open case risk reflected on affected entities.
-- **✅ Shared Response History**: Record completed actions, review resolved cases, and follow configured critical-risk notifications from the same workspace.
+- **📦 Live Shipment Ledger**: Real-time tracking of active cargo, SKU-level value in transit, and dynamic ETA monitoring.
+- **📡 AI Threat Radar**: An automated engine that cross-references live news, weather, and geo-signals against active shipment routes to predict disruptions using a Gradient Boosting ML model.
+- **📧 Autonomous Mitigation**: Automatically dispatches prevention plans and risk alerts to the **Sender (Supplier)** and **Receiver** via Email/Slack when critical threats are detected.
+- **📰 Live Intelligence Feed**: A curated, real-time disruption feed with direct links to original sources and AI-assigned severity levels.
+- **🩺 System Monitor**: Real-time health dashboard tracking API status, model load state, and server resource utilization (CPU, RAM, Disk).
+- **📈 Company Analytics**: Historical analysis of supplier reliability, revenue-at-risk trends, and disruption frequency.
 
 ---
 
@@ -36,8 +53,7 @@ C:\SupplyChain\
 ├── db/
 │   ├── models.py                 <- SQLAlchemy Models (Shipments, Suppliers, Routes)
 ├── data/
-│   ├── sample_company_shipments.csv <- Bundled demo shipment ledger
-│   └── supplychain.db            <- Generated locally at startup; not committed
+│   └── supplychain.db            <- SQLite Production Database
 ├── ml/
 │   ├── live_threat_engine.py     <- Core Correlation Engine (Threats + Shipments)
 │   ├── company_predict.py        <- ML Inference (Gradient Boosting)
@@ -49,25 +65,30 @@ C:\SupplyChain\
 │   ├── news_service.py           <- Live Global Intelligence API
 │   ├── weather_service.py        <- Real-time Weather monitoring
 │   └── geo_service.py            <- Geopolitical event tracking
+├── web/                          <- 3D command center (Three.js, served at /)
+│   ├── index.html · styles.css · app.js
+│   ├── globe.js                  <- WebGL globe, arcs, shipments, events
+│   └── bars3d.js                 <- 3D analytics chart
 ├── ui/
-│   ├── app.py                    <- Premium 6-Tab Command Center
+│   ├── app.py                    <- Streamlit 6-Tab Console
 │   └── components.py             <- Modern CSS & UI Component Library
 ├── utils/
 │   └── config.py                 <- Master Configuration & Environment
 └── logs/                         <- Automated Alert & Audit Trails
 ```
 
-The SQLite database and generated logs are runtime files and are excluded from the repository.
-
 ---
 
 ## 🛠️ Setup & Execution
 
 ### 1. Installation
+Use **Python 3.10 – 3.12** (the pinned pandas / scikit-learn wheels are not available for 3.13+).
 ```bash
-# Activate your environment and install dependencies
-pip install -r requirements.txt
+python -m venv venv
+venv\Scriptsctivate          # Windows  (source venv/bin/activate on macOS/Linux)
+pip install -r requirements-local.txt
 ```
+> **Windows tip:** keep the project in a short path such as `C:\SupplyChain`. Very long paths exceed Windows' 260-character limit and scikit-learn fails to install correctly.
 
 ### 2. Configuration
 Ensure your `.env` file contains the necessary keys for full functionality:
@@ -75,23 +96,47 @@ Ensure your `.env` file contains the necessary keys for full functionality:
 - `GEMINI_API_KEY`: For AI-generated executive summaries.
 - `SLACK_WEBHOOK_URL`: For automated team notifications.
 
+### Automated response integrations
+
+- Configure `SMTP_USER` and `SMTP_PASSWORD`, or `SLACK_WEBHOOK_URL`, to deliver supplier/client alerts. Without either channel, alerts are clearly marked as local-log only.
+- Configure `CARRIER_WEBHOOK_URL` and optionally `CARRIER_API_TOKEN` to connect a company-controlled carrier adapter. The adapter receives `shipment.reroute.requested` and must return JSON with `status: "confirmed"` (and optionally a valid `route_id`) before the app reports a reroute as confirmed. Without this webhook, reroutes remain recommendations.
+- Threat alerts are deduplicated per shipment, risk and cause for 24 hours after successful delivery. Response outcomes can be changed to in progress, completed or rejected in **System → Automated response history** and are summarized on the command dashboard.
+
 ### 3. Launching the Platform
-Start both the backend intelligence engine and the frontend command center:
+Start both the backend intelligence engine and the frontend command centers:
 ```bash
 python run.py all
 ```
-Access the dashboard at `http://localhost:8501`.
+- 3D command center: `http://localhost:8000/`
+- Streamlit console: `http://localhost:8501/`
+- API docs: `http://localhost:8000/docs`
 
-### Deploy on Render
+On first launch the API trains any missing ML models (~30 s) and reseeds the database if the sample shipments' ETAs are in the past. You can also do this by hand:
+```bash
+python run.py train   # text risk model + company event model
+python run.py seed    # fresh shipments relative to today
+python run.py check   # verify artefacts and API health
+```
 
-This repository includes a `render.yaml` Blueprint for a demo deployment. In Render, create a new **Blueprint Instance**, connect the `SupplyChainDisruptionSystem` repository, select `main`, and review the service plan before applying it. The build trains both prediction models from the bundled datasets so threat scans work on a fresh deployment. The service runs both the local API and Streamlit dashboard; Render routes public traffic only to the dashboard.
+---
 
-The demo uses the bundled shipment dataset and a local SQLite database. Render's free service has an ephemeral filesystem and sleeps after inactivity, so saved actions and database changes can be lost on restarts or sleep. Use a persistent database and access controls before entering real company shipment data. Optional live intelligence and email notifications require their own API credentials, which should be added as Render environment secrets rather than committed to Git.
+## 🩹 Fixes in v2.1
 
-### 4. Use the built-in company dataset
-The API loads the bundled sample shipment ledger automatically on a fresh workspace. Open **Control Center** to review shipments and open cases, **Shipments** for risk-linked tracking details, **Network Map** for affected suppliers and routes, and **Actions & History** for resolved responses and the activity record. Use the shared refresh control after another user or process changes the workspace.
-
-Each deployment is a single local company workspace. It is not a shared multi-company service; keep the database and `.env` private to the company running the deployment.
+| Problem | Fix |
+|---|---|
+| Model files are gitignored and `run.py train` never trained the company model, so every threat prediction was `UNKNOWN` | `train` now trains both models; the API trains anything missing on startup |
+| `psutil` missing from requirements → `/monitor/health` always errored | Added; health also degrades gracefully without it |
+| Stub news filter matched the whole query string (e.g. "supply chain disruption") against headlines → threat engine received zero news signals | Token/region matching, falling back to the full feed |
+| Geopolitical events were all tagged `global`, so every event hit every shipment | Events mapped to the region of their country; shipments match on origin *or* destination region |
+| 60 req/min rate limit was tripped by the Streamlit UI itself (~10 calls per refresh) | Loopback exempt, limit configurable (`RATE_LIMIT_PER_MINUTE`, default 300) |
+| `GET /shipments/threats` emailed every risky shipment's contacts on every scan | Read-only by default and cached for 60 s; dispatch via `POST /shipments/threats/notify` |
+| Seeded shipment ETAs were all in the past | Auto-reseed when stale, deterministic seed, `run.py seed` |
+| Japan / Netherlands suppliers had no region | Added to the region map |
+| `gemini-1.5-flash` is retired | Model configurable via `GEMINI_MODEL` (default `gemini-2.5-flash`); malformed LLM plans fall back to rules |
+| `.env.example` placeholder values were treated as real keys | Placeholders are ignored |
+| `/analyze` always suggested alternates for supplier S001 | Alternates come from suppliers in the affected regions |
+| Streamlit System tab shadowed the `sys` module; threat tab crashed on API errors | Fixed |
+| No CORS | Enabled for the API |
 
 ---
 
@@ -101,28 +146,9 @@ Each deployment is a single local company workspace. It is not a shared multi-co
 2. **Scan**: It polls live global APIs for news, weather, and geopolitical events.
 3. **Correlate**: The **Live Threat Engine** identifies overlaps between external events and active shipment regions/routes.
 4. **Predict**: The Gradient Boosting model calculates the probability of delay and total revenue at risk.
-5. **Respond**: New CRITICAL findings create a cause-specific follow-up and notify available supplier and receiver contacts. Risks remain open for an operator to review and close.
+5. **Mitigate**: If risk is HIGH/CRITICAL, the system autonomously emails the specific Supplier and Receiver with an immediate action plan.
 
-## ⚙️ Operational workflow
 
-The Operations tab completes the day-to-day response loop: it shows inventory health, creates validated purchase orders for configured SKUs, and provides a simple open-risk/completed-response view. Each scan, import, alert, purchase order, automated critical follow-up, and response is retained in the SQLite `actions` audit table and displayed in the Operations **Activity Log**. Automatic purchase-order mitigation remains disabled by default.
+## Vercel deployment
 
-The API exposes the same functions for integrations:
-
-- `GET /inventory`, `GET /orders`, `POST /orders`
-- `GET /contacts/suppliers/{supplier_id}`
-- `GET /automation/status`, `POST /automation/mitigate`
-- `GET /activity` for the persistent action history
-
-## 🤖 Automated monitoring
-
-On API startup, the disruption monitor runs continuously (default: every 300 seconds). It evaluates active shipments against live NewsAPI headlines and weather only when a weather API key is configured. Local sample weather fixtures are not treated as current events. The monitor stores elevated findings, refreshes one open case per shipment, and archives cases when a subsequent scan no longer confirms the risk. New CRITICAL findings automatically start a cause-specific follow-up and email configured contacts. To send email, add `supplier_email` and `receiver_email` to the company CSV and configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, and `SMTP_PASSWORD`. If an address or SMTP setup is missing, the dashboard and activity log show that the notice was saved locally and needs setup. The workflow requests information or review; it does not place orders, alter bookings, or close risks automatically. Configure the monitor in `.env`:
-
-```env
-AUTO_SCAN_ENABLED=true
-SCAN_INTERVAL_SECONDS=300
-AUTO_MITIGATION_ENABLED=false
-AUTO_CRITICAL_RESPONSE_ENABLED=true
-```
-
-Set `AUTO_MITIGATION_ENABLED=true` only after confirming recipients, approval rules, and purchase-order controls: it executes mitigation for newly detected events automatically.
+See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for the prepared Vercel configuration, managed database setup, demo data migration, and Preview/Production workflow. No deployment is triggered by these files.

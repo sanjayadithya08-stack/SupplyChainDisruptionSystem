@@ -1,14 +1,14 @@
 """
 Upgrade 3: SQLite database for suppliers and routes.
-Run `python db/init_db.py` once to create and seed the database.
+Run `python init_all_db.py` (or `python run.py seed`) to create and seed the database.
 """
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from sqlalchemy import create_engine, Column, String, Float, Integer, Text, inspect, text
+from sqlalchemy import create_engine, Column, String, Float, Integer, Text
 from sqlalchemy.orm import DeclarativeBase, Session
 from utils.config import Config
 
-engine = create_engine(f"sqlite:///{Config.DB_PATH}", echo=False)
+engine = create_engine(Config.DB_URL, echo=False)
 
 class Base(DeclarativeBase):
     pass
@@ -44,22 +44,14 @@ class ShipmentModel(Base):
     estimated_arrival = Column(String) # YYYY-MM-DD
     value_usd       = Column(Float)
     units           = Column(Integer)
-    risk_level      = Column(String, nullable=False, default="LOW")
 
 def get_session() -> Session:
     return Session(engine)
 
 def init_db():
     Base.metadata.create_all(engine)
-    ensure_shipment_risk_column()
     _seed()
     print(f"Database initialized at {Config.DB_PATH}")
-
-def ensure_shipment_risk_column():
-    """Add the baseline shipment risk column to existing SQLite databases."""
-    if "risk_level" not in {column["name"] for column in inspect(engine).get_columns("shipments")}:
-        with engine.begin() as connection:
-            connection.execute(text("ALTER TABLE shipments ADD COLUMN risk_level VARCHAR NOT NULL DEFAULT 'LOW'"))
 
 def _seed():
     suppliers = [

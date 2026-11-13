@@ -8,7 +8,8 @@ from utils.config import Config
 from db.models import engine, Base as Base1, SupplierModel, RouteModel, ShipmentModel, get_session
 from db.models_extended import Base as Base2, SupplierContactModel, ReceiverModel, InventoryModel, OrderModel, FinancialTrackingModel
 
-def reseed():
+def reseed(seed: int = 42):
+    random.seed(seed)
     print("=======================================================")
     print("  TechCore Supply Chain — Reseeding Live Database 2026")
     print("=======================================================")
@@ -63,26 +64,20 @@ def reseed():
     
     # 4. Receivers / Customer Hubs
     receivers = [
-        ReceiverModel(id="TECH-HQ-LA", name="TechCore North America HQ", country="United States", city="Los Angeles", contact_email="la-ops@techcore.com", contact_phone="+1-310-555-0100", sla_delivery_days=30, tier="Gold"),
-        ReceiverModel(id="TECH-NY-HUB", name="TechCore East Coast Hub", country="United States", city="New York", contact_email="ny-ops@techcore.com", contact_phone="+1-212-555-0100", sla_delivery_days=28, tier="Gold"),
-        ReceiverModel(id="TECH-TX-HUB", name="TechCore Central Distribution", country="United States", city="Dallas", contact_email="tx-supply@techcore.com", contact_phone="+1-972-555-0100", sla_delivery_days=30, tier="Silver"),
-        ReceiverModel(id="TECH-EU-HUB", name="TechCore European Logistics Center", country="Netherlands", city="Amsterdam", contact_email="eu-supply@techcore.nl", contact_phone="+31-20-555-0100", sla_delivery_days=35, tier="Gold"),
-        ReceiverModel(id="TECH-SYD", name="TechCore APAC Hub", country="Australia", city="Sydney", contact_email="apac@techcore.com.au", contact_phone="+61-2-555-0100", sla_delivery_days=40, tier="Silver"),
-        ReceiverModel(id="TECH-VAN", name="TechCore Canada Distribution", country="Canada", city="Vancouver", contact_email="supply@techcore.ca", contact_phone="+1-604-555-0100", sla_delivery_days=32, tier="Silver"),
-        ReceiverModel(id="TECH-TYO", name="TechCore Japan Assembly Center", country="Japan", city="Tokyo", contact_email="japan-ops@techcore.jp", contact_phone="+81-3-5555-0100", sla_delivery_days=25, tier="Gold"),
-        ReceiverModel(id="TECH-UK-HUB", name="TechCore UK Fulfillment", country="United Kingdom", city="London", contact_email="uk-fulfillment@techcore.co.uk", contact_phone="+44-20-7946-0100", sla_delivery_days=30, tier="Silver"),
+        ReceiverModel(id="TECH-HQ-LA", name="TechCore North America HQ (Demo)", country="United States", city="Los Angeles", contact_email="receiver.tech-hq-la@example.com", contact_phone="", contact_verified=False, sla_delivery_days=30, tier="Gold"),
+        ReceiverModel(id="TECH-NY-HUB", name="TechCore East Coast Hub (Demo)", country="United States", city="New York", contact_email="receiver.tech-ny-hub@example.com", contact_phone="", contact_verified=False, sla_delivery_days=28, tier="Gold"),
+        ReceiverModel(id="TECH-TX-HUB", name="TechCore Central Distribution (Demo)", country="United States", city="Dallas", contact_email="receiver.tech-tx-hub@example.com", contact_phone="", contact_verified=False, sla_delivery_days=30, tier="Silver"),
+        ReceiverModel(id="TECH-EU-HUB", name="TechCore European Logistics Center (Demo)", country="Netherlands", city="Amsterdam", contact_email="receiver.tech-eu-hub@example.com", contact_phone="", contact_verified=False, sla_delivery_days=35, tier="Gold"),
+        ReceiverModel(id="TECH-SYD", name="TechCore APAC Hub (Demo)", country="Australia", city="Sydney", contact_email="receiver.tech-syd@example.com", contact_phone="", contact_verified=False, sla_delivery_days=40, tier="Silver"),
+        ReceiverModel(id="TECH-VAN", name="TechCore Canada Distribution (Demo)", country="Canada", city="Vancouver", contact_email="receiver.tech-van@example.com", contact_phone="", contact_verified=False, sla_delivery_days=32, tier="Silver"),
+        ReceiverModel(id="TECH-TYO", name="TechCore Japan Assembly Center (Demo)", country="Japan", city="Tokyo", contact_email="receiver.tech-tyo@example.com", contact_phone="", contact_verified=False, sla_delivery_days=25, tier="Gold"),
+        ReceiverModel(id="TECH-UK-HUB", name="TechCore UK Fulfillment (Demo)", country="United Kingdom", city="London", contact_email="receiver.tech-uk-hub@example.com", contact_phone="", contact_verified=False, sla_delivery_days=30, tier="Silver"),
     ]
     
     # 5. Supplier Contacts
     supplier_contacts = [
-        SupplierContactModel(id="SC001", supplier_id="S001", contact_name="David Chen", email="procurement@globalmicrotech.tw", phone="+886-2-1234-5678", role="Procurement Director", alert_level="ALL", verified=True),
-        SupplierContactModel(id="SC002", supplier_id="S001", contact_name="Sarah Wong", email="ops@globalmicrotech.tw", phone="+886-2-1234-5679", role="Operations Manager", alert_level="CRITICAL_ONLY", verified=True),
-        SupplierContactModel(id="SC003", supplier_id="S003", contact_name="Klaus Mueller", email="supply@bavarian-motors.de", phone="+49-30-1234-5678", role="VP Supply Chain", alert_level="ALL", verified=True),
-        SupplierContactModel(id="SC004", supplier_id="S007", contact_name="Wei Zhang", email="orders@shenzhen-elec.cn", phone="+86-755-1234-5678", role="Logistics Lead", alert_level="ALL", verified=True),
-        SupplierContactModel(id="SC005", supplier_id="S009", contact_name="John Smith", email="sales@texaspolymers.us", phone="+1-512-1234-5678", role="Account Executive", alert_level="CRITICAL_ONLY", verified=True),
-        SupplierContactModel(id="SC006", supplier_id="S002", contact_name="Min-Jun Park", email="logistics@seoulsilicates.kr", phone="+82-2-555-1234", role="Export Coordinator", alert_level="ALL", verified=True),
-        SupplierContactModel(id="SC007", supplier_id="S008", contact_name="Nguyen Van Minh", email="contact@hanoitech.vn", phone="+84-24-3825-1234", role="Plant Director", alert_level="ALL", verified=True),
-        SupplierContactModel(id="SC008", supplier_id="S013", contact_name="Aarav Sharma", email="export@mumbaipharma.in", phone="+91-22-6677-8899", role="Global Supply Lead", alert_level="ALL", verified=True),
+        SupplierContactModel(id=f"DEMO-{sid}", supplier_id=sid, contact_name=f"{sid} Operations Contact (Demo)", email=f"{sid.lower()}.contact@example.com", phone="", role="Operations (demo)", alert_level="ALL", verified=False)
+        for sid in [f"S{i:03d}" for i in range(1, 15)]
     ]
     
     # 6. Inventory Records

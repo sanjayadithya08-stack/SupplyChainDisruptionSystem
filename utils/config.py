@@ -5,11 +5,18 @@ load_dotenv()
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+def _real(value: str) -> str:
+    """Treat the placeholder values shipped in .env.example as unset."""
+    v = (value or "").strip()
+    if not v or "your_" in v or "your/" in v or v.startswith("your"):
+        return ""
+    return v
+
 class Config:
     # API Settings
     API_PORT = int(os.getenv("API_PORT", 8000))
-    UI_PORT = int(os.getenv("PORT", os.getenv("UI_PORT", 8501)))
-    UI_HOST = os.getenv("UI_HOST", "127.0.0.1")
+    UI_PORT = int(os.getenv("UI_PORT", 8501))
     API_HOST = os.getenv("API_HOST", "0.0.0.0")
 
     # Paths
@@ -31,32 +38,42 @@ class Config:
     CACHE_TTL_SECONDS = int(os.getenv("CACHE_TTL", 300))
     RISK_LEVELS = ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
     DEFAULT_RISK = "UNKNOWN"
-    # Automated mitigation can send email/Slack and create purchase orders.
-    # Keep it opt-in; operators can always run a tracked mitigation manually.
-    AUTO_MITIGATION_ENABLED = os.getenv("AUTO_MITIGATION_ENABLED", "false").lower() == "true"
-    # Cause-specific critical responses create an audit record and notify only
-    # explicitly supplied supplier/customer contacts when email is configured.
-    AUTO_CRITICAL_RESPONSE_ENABLED = os.getenv("AUTO_CRITICAL_RESPONSE_ENABLED", "true").lower() == "true"
-    AUTO_SCAN_ENABLED = os.getenv("AUTO_SCAN_ENABLED", "true").lower() == "true"
-    SCAN_INTERVAL_SECONDS = max(60, int(os.getenv("SCAN_INTERVAL_SECONDS", 300)))
     
     # Alert Recipients
-    ALERT_EMAIL = os.getenv("ALERT_EMAIL", "ops@yourcompany.com")
-    ALERT_RECIPIENTS = [ALERT_EMAIL]
+    ALERT_EMAIL = _real(os.getenv("ALERT_EMAIL", ""))
+    ALERT_RECIPIENTS = [ALERT_EMAIL] if ALERT_EMAIL else []
+    DEMO_ALERTS_ENABLED = os.getenv("DEMO_ALERTS_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+
+    # Rate limiting (requests per minute per client IP; loopback is exempt)
+    RATE_LIMIT_PER_MINUTE = int(os.getenv("RATE_LIMIT_PER_MINUTE", 300))
+
+    # Company model artefacts
+    COMPANY_MODEL_PATH = os.path.join(ARTEFACTS_DIR, "company_model.pkl")
+    COMPANY_ENCODER_PATH = os.path.join(ARTEFACTS_DIR, "company_encoders.pkl")
+    WEB_DIR = os.path.join(PROJECT_ROOT, "web")
 
     # External API Keys
-    NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
-    WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "")
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+    NEWS_API_KEY = _real(os.getenv("NEWS_API_KEY", ""))
+    WEATHER_API_KEY = _real(os.getenv("WEATHER_API_KEY", ""))
+    GEMINI_API_KEY = _real(os.getenv("GEMINI_API_KEY", ""))
+    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
     # SMTP Email
     SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
     SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
-    SMTP_USER = os.getenv("SMTP_USER", "")
-    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+    SMTP_USER = _real(os.getenv("SMTP_USER", ""))
+    SMTP_PASSWORD = _real(os.getenv("SMTP_PASSWORD", ""))
 
     # Slack
-    SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
+    SLACK_WEBHOOK_URL = _real(os.getenv("SLACK_WEBHOOK_URL", ""))
+
+    # Carrier reroute webhook. Reroutes are never marked executed until this
+    # endpoint explicitly confirms them.
+    CARRIER_WEBHOOK_URL = _real(os.getenv("CARRIER_WEBHOOK_URL", ""))
+    if VERCEL_RUNTIME and any(host in CARRIER_WEBHOOK_URL.lower() for host in ("localhost", "127.0.0.1")):
+        CARRIER_WEBHOOK_URL = ""
+    CARRIER_API_TOKEN = _real(os.getenv("CARRIER_API_TOKEN", ""))
+    CARRIER_WEBHOOK_TIMEOUT = int(os.getenv("CARRIER_WEBHOOK_TIMEOUT", 8))
 
     # Database
     DB_PATH = os.path.join(PROJECT_ROOT, "data", "supplychain.db")

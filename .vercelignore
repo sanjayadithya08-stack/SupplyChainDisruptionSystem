@@ -1,0 +1,13 @@
+venv/
+collaborator-latest/
+render-demo-fix/
+.git/
+.env
+.env.*
+!.env.example
+data/source_snapshots/
+data/disruption_analytics_events.csv
+data/supplychain.db*
+logs/
+**/__pycache__/
+**/*.pyc
