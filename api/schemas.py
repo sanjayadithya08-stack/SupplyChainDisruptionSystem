@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Literal
 
 class PredictionResponse(BaseModel):
     label: str
@@ -36,25 +36,13 @@ class AlertRequest(BaseModel):
     level: str
     message: str
 
-class OrderRequest(BaseModel):
-    supplier_id: str = Field(min_length=1, max_length=64)
-    sku: str = Field(min_length=1, max_length=64)
-    quantity: int = Field(gt=0, le=1_000_000)
-    unit_price: float = Field(gt=0)
-    reason: str = Field(default="Manual replenishment", max_length=250)
-    shipment_id: Optional[str] = Field(default=None, max_length=64)
+class ThreatResponseRequest(BaseModel):
+    mode: Optional[Literal["immediate", "short_term", "long_term", "ai"]] = None
+    responses: Dict[str, Literal["immediate", "short_term", "long_term", "ai"]] = Field(default_factory=dict)
 
-class AutomationRequest(BaseModel):
-    shipment_id: str = Field(min_length=1, max_length=64)
-    disruption_type: str = Field(min_length=1, max_length=64)
-    risk_level: str = Field(min_length=1, max_length=16)
-
-class ShipmentImportRequest(BaseModel):
-    shipments: List[Dict[str, Any]] = Field(min_length=1, max_length=10000)
-    replace_existing: bool = True
-
-class DisruptionResolutionRequest(BaseModel):
-    action_taken: str = Field(min_length=3, max_length=500)
+class ActionOutcomeRequest(BaseModel):
+    outcome: Literal["in_progress", "completed", "rejected"]
+    note: Optional[str] = None
 
 class HealthResponse(BaseModel):
     status: str
@@ -62,4 +50,5 @@ class HealthResponse(BaseModel):
     uptime_seconds: float
     artefacts: Dict[str, bool]
     system_metrics: Dict[str, Any] = Field(default_factory=dict)
-    version: str = "2.0.0"
+    channels: Dict[str, Any] = Field(default_factory=dict)
+    version: str = "2.1.0"

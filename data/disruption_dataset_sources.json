@@ -1,0 +1,46 @@
+{
+  "retrieved_on": "2026-11-13",
+  "source_snapshot_date": "2026-11-08",
+  "record_count": 72,
+  "unique_disruption_events": 35,
+  "cause_type_count": 10,
+  "date_from": "2019-07-19",
+  "date_to": "2026-09-22",
+  "counts_by_event_type": {
+    "weather-stoppage": 39,
+    "labour-action": 16,
+    "infrastructure-failure": 3,
+    "drought-restriction": 3,
+    "port-closure": 3,
+    "security-incident": 3,
+    "terminal-closure": 2,
+    "collision-or-casualty": 1,
+    "cyber-incident": 1,
+    "regulatory-or-customs-action": 1
+  },
+  "counts_by_measurement_series": {
+    "portwatch-port-calls": 42,
+    "portwatch-port-calls-container": 23,
+    "portwatch-chokepoint-transits-total": 3,
+    "portwatch-port-export-tonnes": 2,
+    "portwatch-chokepoint-capacity-tonnes": 1,
+    "portwatch-chokepoint-transits-tanker": 1
+  },
+  "row_grain": "One measured event × affected port/chokepoint × activity-series observation. Multiple rows may describe one disruption event; these are not shipment transactions or delay-day labels.",
+  "selection_rule": "Only primary event-window decreases with official/reported cause attribution, non-provisional measurements, and no superseding revision.",
+  "sources": [
+    {
+      "name": "World Freight Monitor event archive",
+      "url": "https://worldfreightmonitor.com/data/events.json",
+      "license": "CC BY 4.0 for WFM-authored records; upstream terms apply",
+      "note": "Cause text, cause attribution status, confidence, severity, and original source references are retained."
+    },
+    {
+      "name": "IMF PortWatch",
+      "url": "https://portwatch.imf.org/",
+      "license": "IMF terms; attribution required; permissions may be required for systematic or commercial reuse",
+      "note": "Underlying port-call, container-call, and chokepoint-flow measurements are included in the WFM event records."
+    }
+  ],
+  "training_guidance": "Useful as an exploratory measured maritime-flow impact dataset. It does not contain individual shipment IDs or actual shipment delay days and should not be appended to the company shipment labels."
+}

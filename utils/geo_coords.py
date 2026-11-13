@@ -1,72 +1,84 @@
-# Coordinate mapping for major supply chain hubs, trade routes, and ports
+# Coordinate mapping for major supply chain hubs, countries and chokepoints.
 HUB_COORDS = {
-    # Ports & Hub Cities
+    # Ports / cities
     "Tokyo": {"lat": 35.6762, "lon": 139.6503},
-    "Los Angeles": {"lat": 34.0522, "lon": -118.2437},
-    "Long Beach": {"lat": 33.7701, "lon": -118.1937},
-    "Seattle": {"lat": 47.6062, "lon": -122.3321},
+    "Los Angeles": {"lat": 33.7405, "lon": -118.2775},
+    "Long Beach": {"lat": 33.7542, "lon": -118.2165},
     "Shanghai": {"lat": 31.2304, "lon": 121.4737},
     "Shenzhen": {"lat": 22.5431, "lon": 114.0579},
     "Kaohsiung": {"lat": 22.6273, "lon": 120.3014},
+    "Seattle": {"lat": 47.6062, "lon": -122.3321},
     "Rotterdam": {"lat": 51.9225, "lon": 4.4792},
     "Hamburg": {"lat": 53.5511, "lon": 9.9937},
-    "Amsterdam": {"lat": 52.3676, "lon": 4.9041},
     "New York": {"lat": 40.7128, "lon": -74.0060},
-    "Houston": {"lat": 29.7604, "lon": -95.3698},
-    "Chicago": {"lat": 41.8781, "lon": -87.6298},
-    "Chicago O'Hare": {"lat": 41.9742, "lon": -87.9073},
-    "Frankfurt": {"lat": 50.1109, "lon": 8.6821},
-    "Frankfurt Airport": {"lat": 50.0379, "lon": 8.5622},
     "Veracruz": {"lat": 19.1738, "lon": -96.1342},
+    "Houston": {"lat": 29.7604, "lon": -95.3698},
     "Manzanillo": {"lat": 19.0522, "lon": -104.3158},
     "Jakarta": {"lat": -6.2088, "lon": 106.8456},
+    "Singapore": {"lat": 1.2903, "lon": 103.8519},
     "Sydney": {"lat": -33.8688, "lon": 151.2093},
     "Mumbai": {"lat": 19.0760, "lon": 72.8777},
     "Busan": {"lat": 35.1796, "lon": 129.0756},
-    "Seoul": {"lat": 37.5665, "lon": 126.9780},
     "Vancouver": {"lat": 49.2827, "lon": -123.1207},
-    "Singapore": {"lat": 1.3521, "lon": 103.8198},
     "Cape Town": {"lat": -33.9249, "lon": 18.4241},
-    "Dubai": {"lat": 25.2048, "lon": 55.2708},
-    "Sao Paulo": {"lat": -23.5505, "lon": -46.6333},
-    "Hanoi": {"lat": 21.0285, "lon": 105.8542},
-    "Bangkok": {"lat": 13.7563, "lon": 100.5018},
-    "Calgary": {"lat": 51.0447, "lon": -114.0719},
-    "Dallas": {"lat": 32.7767, "lon": -96.7970},
-    "London": {"lat": 51.5074, "lon": -0.1278},
-    "Ho Chi Minh City": {"lat": 10.8231, "lon": 106.6297},
-    "Austin": {"lat": 30.2672, "lon": -97.7431},
-    "Lima": {"lat": -12.0464, "lon": -77.0428},
-    "Prague": {"lat": 50.0755, "lon": 14.4378},
-    "Munich": {"lat": 48.1351, "lon": 11.5820},
-    "Chennai": {"lat": 13.0827, "lon": 80.2707},
-    "Pune": {"lat": 18.5204, "lon": 73.8567},
-    "Helsinki": {"lat": 60.1699, "lon": 24.9384},
-    "Toronto": {"lat": 43.6532, "lon": -79.3832},
-    "Istanbul": {"lat": 41.0082, "lon": 28.9784},
-    "Warsaw": {"lat": 52.2297, "lon": 21.0122},
-    "Barcelona": {"lat": 41.3874, "lon": 2.1686},
-    "Abu Dhabi": {"lat": 24.4539, "lon": 54.3773},
-    "Osaka": {"lat": 34.6937, "lon": 135.5023},
-    "Gothenburg": {"lat": 57.7089, "lon": 11.9746},
-    "Santiago": {"lat": -33.4489, "lon": -70.6693},
-    "Monterrey": {"lat": 25.6866, "lon": -100.3161},
-
-    # Country fallbacks
+    "Frankfurt Airport": {"lat": 50.0379, "lon": 8.5622},
+    "Chicago O'Hare": {"lat": 41.9742, "lon": -87.9073},
+    # Countries (centroids)
     "Taiwan": {"lat": 23.6978, "lon": 120.9605},
+    "South Korea": {"lat": 36.5, "lon": 127.8},
+    "Japan": {"lat": 36.2, "lon": 138.25},
     "Germany": {"lat": 51.1657, "lon": 10.4515},
+    "Czech Republic": {"lat": 49.8, "lon": 15.47},
+    "Netherlands": {"lat": 52.13, "lon": 5.29},
     "China": {"lat": 35.8617, "lon": 104.1954},
+    "Vietnam": {"lat": 14.06, "lon": 108.28},
+    "Thailand": {"lat": 15.87, "lon": 100.99},
+    "Indonesia": {"lat": -0.79, "lon": 113.92},
     "USA": {"lat": 37.0902, "lon": -95.7129},
+    "Canada": {"lat": 56.13, "lon": -106.35},
+    "Mexico": {"lat": 23.63, "lon": -102.55},
+    "Peru": {"lat": -9.19, "lon": -75.02},
     "India": {"lat": 20.5937, "lon": 78.9629},
     "Brazil": {"lat": -14.2350, "lon": -51.9253},
     "France": {"lat": 46.2276, "lon": 2.2137},
-    "Mexico": {"lat": 23.6345, "lon": -102.5528},
-    "Canada": {"lat": 56.1304, "lon": -106.3468},
-    "Vietnam": {"lat": 14.0583, "lon": 108.2772},
-    "South Korea": {"lat": 35.9078, "lon": 127.7669},
-    "Thailand": {"lat": 15.8700, "lon": 100.9925},
-    "Indonesia": {"lat": -0.7893, "lon": 113.9213},
+    "UK": {"lat": 54.0, "lon": -2.0},
+    "Yemen": {"lat": 15.55, "lon": 48.52},
+    "South Africa": {"lat": -30.56, "lon": 22.94},
+    "Egypt": {"lat": 26.82, "lon": 30.80},
 }
 
+# Chokepoints used to bend route arcs realistically
+WAYPOINTS = {
+    "Suez Canal": {"lat": 30.0, "lon": 32.55},
+    "Red Sea": {"lat": 14.0, "lon": 42.5},
+    "Cape of Good Hope": {"lat": -35.5, "lon": 19.0},
+    "Bay of Bengal": {"lat": 8.0, "lon": 87.0},
+    "Gulf of Mexico": {"lat": 24.5, "lon": -92.0},
+}
+
+CITY_REGION = {
+    "Los Angeles": "us-west-coast", "Long Beach": "us-west-coast", "Seattle": "us-west-coast",
+    "New York": "us-east-coast", "Houston": "north-america", "Chicago O'Hare": "north-america",
+    "Vancouver": "north-america", "Rotterdam": "europe", "Hamburg": "europe",
+    "Frankfurt Airport": "europe", "Sydney": "oceania", "Mumbai": "south-asia",
+    "Singapore": "southeast-asia", "Jakarta": "southeast-asia", "Tokyo": "east-asia",
+    "Shanghai": "east-asia", "Shenzhen": "east-asia", "Kaohsiung": "east-asia", "Busan": "east-asia",
+    "Veracruz": "latin-america", "Manzanillo": "latin-america", "Cape Town": "global",
+    "Dallas": "north-america", "Amsterdam": "europe", "London": "europe",
+    "Suez Canal": "middle-east", "Red Sea": "middle-east",
+    "Bay of Bengal": "south-asia", "Gulf of Mexico": "north-america",
+}
+
+
 def get_coords(name):
-    return HUB_COORDS.get(name, {"lat": 0.0, "lon": 0.0})
+    return HUB_COORDS.get(name) or WAYPOINTS.get(name) or {"lat": 0, "lon": 0}
+
+
+def route_path(origin: str, destination: str, via: list) -> list:
+    """Ordered [lat, lon] points for a route, passing through known chokepoints."""
+    pts = [get_coords(origin)]
+    order = ["Bay of Bengal", "Red Sea", "Suez Canal", "Cape of Good Hope", "Gulf of Mexico"]
+    for wp in sorted([v.strip() for v in via if v.strip() in WAYPOINTS], key=order.index):
+        pts.append(WAYPOINTS[wp])
+    pts.append(get_coords(destination))
+    return [[p["lat"], p["lon"]] for p in pts]
