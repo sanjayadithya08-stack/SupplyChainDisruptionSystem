@@ -1,4 +1,5 @@
 import os
+import tempfile
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,7 +27,7 @@ class Config:
     DATA_DIR = os.path.join(PROJECT_ROOT, "data")
     ML_DIR = os.path.join(PROJECT_ROOT, "ml")
     ARTEFACTS_DIR = os.path.join(ML_DIR, "artefacts")
-    LOGS_DIR = os.path.join(PROJECT_ROOT, "logs")
+    LOGS_DIR = os.path.join(tempfile.gettempdir(), "supplychain-logs") if VERCEL_RUNTIME else os.path.join(PROJECT_ROOT, "logs")
     
     DATASET_PATH = os.path.join(DATA_DIR, "dataset.csv")
     AUGMENTED_DATASET_PATH = os.path.join(DATA_DIR, "augmented_dataset.csv")
@@ -83,6 +84,12 @@ class Config:
 
     # Database
     DB_PATH = os.path.join(PROJECT_ROOT, "data", "supplychain.db")
+    DATABASE_URL = _real(os.getenv("DATABASE_URL", ""))
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = "postgresql+psycopg://" + DATABASE_URL[len("postgres://"):]
+    elif DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = "postgresql+psycopg://" + DATABASE_URL[len("postgresql://"):]
+    DB_URL = DATABASE_URL or f"sqlite:///{DB_PATH}"
     
     # Master Lists
     REGIONS = [
@@ -96,7 +103,10 @@ class Config:
         "logistics", "supplier", "customs", "normal"
     ]
 
-# Ensure directories exist
-os.makedirs(Config.DATA_DIR, exist_ok=True)
-os.makedirs(Config.ARTEFACTS_DIR, exist_ok=True)
-os.makedirs(Config.LOGS_DIR, exist_ok=True)
+if Config.VERCEL_RUNTIME:
+    # Vercel bundles are read-only; only /tmp is writable at runtime.
+    os.makedirs(Config.LOGS_DIR, exist_ok=True)
+else:
+    os.makedirs(Config.DATA_DIR, exist_ok=True)
+    os.makedirs(Config.ARTEFACTS_DIR, exist_ok=True)
+    os.makedirs(Config.LOGS_DIR, exist_ok=True)
