@@ -1,9 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "fastapi",
+  "fluid": false,
   "functions": {
     "api/main.py": {
-      "maxDuration": 120,
+      "maxDuration": 60,
       "includeFiles": "{web/**,data/*.csv,ml/artefacts/**}",
       "excludeFiles": "{venv/**,collaborator-latest/**,render-demo-fix/**,data/source_snapshots/**,data/disruption_analytics_events.csv,logs/**,**/__pycache__/**,**/*.pyc}"
     }
